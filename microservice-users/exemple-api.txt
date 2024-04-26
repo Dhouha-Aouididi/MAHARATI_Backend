@@ -1,0 +1,25 @@
+//POST
+localhost:3001/users
+{
+    "email": "newuser@example.com",
+    "password": "password123",
+    "name": "New User",
+    "address": "456 Elm St",
+    "phone": "555-5678",
+    "registration_date": "2024-03-09 12:00:00",
+    "profile_image": "new_profile.jpg"
+}
+
+//UPDATE
+localhost:3001/users/id
+{
+    "email": "updated_email@example.com",
+    "password": "updated_password",
+    "name": "Updated Name",
+    "address": "Updated Address",
+    "phone": "555-1234",
+    "profile_image": "updated_profile.jpg"
+}
+
+//DELETE
+localhost:3001/users/:id
