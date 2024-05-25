@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const commentRoutes = require('./routes/commentRoutes');
+const bookingRoutes = require('./routes/bookingRoutes');
 const { sequelize } = require('./model/index');
 
 const app = express();
@@ -34,10 +34,10 @@ async function testDBConnection() {
 testDBConnection();
 
 // Route configuration
-app.use('/comments', commentRoutes);
+app.use('/bookings', bookingRoutes);
 
 // Start the server
-const PORT = process.env.PORT || 3007;
+const PORT = process.env.PORT || 3008;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });

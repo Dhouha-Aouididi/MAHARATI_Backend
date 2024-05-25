@@ -7,7 +7,7 @@ const serviceController = require('../controller/serviceController');
 router.post('/create-service', upload.single('image'), serviceController.createService);
 router.get('/', serviceController.getAllServices);
 router.get('/:id', serviceController.getServiceById);
-router.put('/:id', serviceController.updateService);
+router.put('/:id', upload.single('image'),serviceController.updateService);
 router.delete('/:id', serviceController.deleteService);
 router.delete('/delete-all', serviceController.deleteAllServices);
 // Update service ratings by ID

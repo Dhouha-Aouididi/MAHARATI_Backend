@@ -9,7 +9,7 @@ const { createProxyMiddleware } = require("http-proxy-middleware");
 const app = express();
 
 // Define allowed origins
-const allowedOrigins = ['http://localhost:4200', 'http://localhost:4500'];
+const allowedOrigins = ['http://localhost:4001', 'http://localhost:4000'];
 
 // CORS options with allowed origins
 const corsOptions = {
@@ -39,7 +39,7 @@ const services = [
   },
   {
     route: "/bookings",
-    target: "http://localhost:3003/bookings",
+    target: "http://localhost:3008/bookings",
   },
   {
     route: "/providers",
@@ -48,10 +48,6 @@ const services = [
   {
     route: "/comments",
     target: "http://localhost:3007/comments",
-  },
-  {
-    route: "/ratings",
-    target: "http://localhost:3008/ratings",
   },
   {
     route: "/demandes",

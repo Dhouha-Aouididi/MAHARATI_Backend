@@ -104,47 +104,48 @@ exports.getServiceById = (req, res, next) => {
 //     });
 // };
 
-exports.updateService = (req, res, next) => {
+exports.updateService= (req, res, next) => {
   const { id } = req.params;
-
-  Service.findByPk(id)
-    .then(service => {
-      if (!service) {
-        return res.status(404).json({ message: 'Service not found!' });
-      }
-
-      // Update the service with new values
-      service.title = req.body.title || service.title;
-      service.description = req.body.description || service.description;
-      service.category = req.body.category || service.category;
-      service.price = req.body.price || service.price;
-      service.availability = req.body.availability || service.availability;
-      service.ratings = req.body.ratings || service.ratings;
-
-      // Check if there's a new image uploaded
-      if (req.file) {
-        const image = req.protocol + '://' + req.get('host') + '/public/' + req.file.filename;
-        service.image = image;
-      }
-
-      // Save the updated service
-      service.save()
-        .then(updatedService => {
-          res.status(200).json({
-            message: 'Service updated successfully!',
-            updatedService
-          });
-        })
-        .catch(err => {
-          console.error(err);
-          res.status(500).json({ error: 'Error updating service' });
-        });
-    })
-    .catch(err => {
-      console.error(err);
-      res.status(500).json({ error: 'Internal Server Error' });
-    });
-};
+ 
+ Service.findByPk(id)
+ .then(service=> {
+  if (!service) {
+  return res.status(404).json({message: 'Service not found!' });
+  } 
+ 
+ // Update the service with new values
+  service.title= req.body.title|| service.title;
+ service.description= req.body.description|| service.description;
+ service.category= req.body.category|| service.category;
+ service.price= req .body.price|| service.price;
+ service.availability= req.body.availability|| service.availability;
+ service.ratings= req.body.ratings|| service.ratings;
+ 
+ // Check if there's a new image uploaded
+  if (req.file){
+  const image = req.protocol+ '://' + req.get('host')+ '/public/' + req.file.filename;
+ service.image = image;
+  }
+ 
+  // Save the updated service
+  service.save()
+ .then(updatedService=> {
+  res.status(200).json({
+ message: 'Service updated successfully!',
+  updatedService
+  });
+  })
+  .catch(err=> {
+  console.error(err);
+ res.status(500).json({error: ' Error updating service: ' + err.message});
+  });
+  })
+  .catch(err=> {
+  console.error(err);
+ res.status(500).json({error: 'Internal Server Error' });
+  });
+ };
+ 
 
 
 exports.deleteAllServices = (req, res, next) => {
