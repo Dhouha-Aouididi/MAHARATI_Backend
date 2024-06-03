@@ -1,6 +1,8 @@
-const db = require("./db");
-const helper = require("../helper");
-const config = require("../config");
+// services/user.controller.js
+
+const db = require('./db');
+const helper = require('../helper');
+const config = require('../config');
 
 async function getMultiple(page = 1) {
   const offset = helper.getOffset(page, config.listPerPage);
@@ -17,17 +19,14 @@ async function getMultiple(page = 1) {
   };
 }
 
-async function getById(userId) {
-  const rows = await db.query(
-    `SELECT 
-    id, email, username, address, phone, profile_image
-    FROM Users WHERE id = ?`,
-    [userId]
-  );
-
-  return helper.emptyOrRows(rows);
+async function getById(id) {
+  const [user] = await db.query('SELECT * FROM Users WHERE id = ?', [id]);
+  if (!user) {
+    throw new Error('User not found');
+  }
+  return user;
 }
-// User Controller - user.controller.js
+
 async function create(user) {
   if (!user || !user.email || !user.password || !user.username || !user.address || !user.phone || !user.profile_image) {
     throw new Error("Missing required fields for user creation");
@@ -50,73 +49,36 @@ async function create(user) {
   return { message };
 }
 
-
-// async function update(id, user) {
-//   // Convert undefined values to null
-//   const values = [
-//     user.username || null,
-//     user.email || null,
-//     user.address || null,
-//     user.phone || null,
-//     user.profile_image || null,
-//     id
-//   ];
-
-//   const result = await db.query(
-//     `UPDATE Users 
-//     SET email=?, username=?, address=?, phone=?, profile_image=?
-//     WHERE id=?`,
-//     values
-//   );
-
-//   let message = "Error in updating user";
-
-//   if (result.affectedRows) {
-//     message = "User updated successfully";
-//   }
-
-//   return { message };
-// }
-
-// Assuming you have already imported required modules like express, etc.
 async function update(id, user) {
-  // Convert undefined values to null
   const values = [
-    user.username || null,
     user.email || null,
+    user.username || null,
     user.address || null,
     user.phone || null,
     user.profile_image || null,
     id
   ];
 
-  try {
-    const result = await db.query(
-      `UPDATE Users 
-      SET email=?, username=?, address=?, phone=?, profile_image=?
-      WHERE id=?`,
-      values
-    );
+  const result = await db.query(
+    `UPDATE Users 
+    SET email=?, username=?, address=?, phone=?, profile_image=?
+    WHERE id=?`,
+    values
+  );
 
-    let message = "Error in updating user";
+  let message = "Error in updating user";
 
-    if (result.affectedRows) {
-      message = "User updated successfully";
-    }
-
-    return { message };
-  } catch (error) {
-    console.error('Error while updating user:', error.message);
-    throw error;
+  if (result.affectedRows) {
+    message = "User updated successfully";
   }
+
+  return { message };
 }
-
-
-
 
 async function remove(id) {
   const result = await db.query(
-    `DELETE FROM Users WHERE id=${id}`
+    `DELETE FROM Users WHERE id=?`,
+    [id]
   );
 
   let message = "Error in deleting user";

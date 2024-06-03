@@ -1,6 +1,9 @@
+// routes/user.route.js
+
 const express = require("express");
 const router = express.Router();
 const UserController = require('../services/user.controller');
+
 /* GET users. */
 router.get("/", async function (req, res, next) {
   try {
@@ -37,27 +40,18 @@ router.post("/", async function (req, res, next) {
   }
 });
 
-/* first PUT user */
-// router.put("/:id", async function (req, res, next) {
-//   try {
-//     res.json(await UserController.update(req.params.id, req.body));
-//   } catch (err) {
-//     console.error(`Error while updating user`, err.message);
-//     next(err);
-//   }
-// });
-router.put("/:id", async function (req, res, next) {
+// Update user profile
+router.put('/:id', async function(req, res, next) {
   try {
-    const response = await UserController.updateUser(req.params.id, req.body);
-    res.json(response);
+    res.json(await UserController.update(req.params.id, req.body));
   } catch (err) {
     console.error(`Error while updating user`, err.message);
-    res.status(500).json({ message: 'Internal Server Error', error: err.message });
+    next(err);
   }
 });
 
-/* DELETE user */
-router.delete("/:id", async function (req, res, next) {
+// Delete user profile
+router.delete('/:id', async function(req, res, next) {
   try {
     res.json(await UserController.remove(req.params.id));
   } catch (err) {
@@ -77,6 +71,5 @@ router.get("/:userId/username", async function (req, res, next) {
     next(err);
   }
 });
-
 
 module.exports = router;
