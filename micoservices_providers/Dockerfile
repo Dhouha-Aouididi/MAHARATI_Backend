@@ -1,25 +1,20 @@
-# Base image
-FROM node:18-alpine AS builder
+# Utiliser l'image officielle Node.js en tant que base
+FROM node:14
 
-# Set working directory
+# Créer le répertoire de travail dans le conteneur
 WORKDIR /app
 
-# Copy package.json and package-lock.json (or yarn.lock)
+# Copier les fichiers package.json et package-lock.json
 COPY package*.json ./
 
-# Install dependencies
+# Installer les dépendances
 RUN npm install
 
-# Copy the rest of your application code
+# Copier le reste des fichiers de l'application
 COPY . .
 
-# Build stage (optional, if your app requires a build step)
-FROM node:18-alpine AS runner
+# Exposer le port sur lequel votre application s'exécute
+EXPOSE 3006
 
-WORKDIR /app
-
-COPY --from=builder /app/node_modules /app/node_modules
-COPY . .
-
-# Start command
-CMD [ "npm", "start" ]
+# Commande pour démarrer votre application
+CMD ["npm", "start"]

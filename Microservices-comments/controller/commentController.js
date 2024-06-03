@@ -91,33 +91,21 @@ exports.getCommentsForService = async (req, res) => {
 
 // Controller to delete a comment by ID
 exports.deleteComment = async (req, res) => {
-  const { commentId } = req.params;
-  const userId = req.user.id; // Supposons que l'ID de l'utilisateur actuel est accessible via req.user
-
   try {
-    // Trouver le commentaire par ID
-    const comment = await Comment.findByPk(commentId);
-
+    const { id } = req.params;
+    const comment = await Comment.findByPk(id);
+    
     if (!comment) {
-      console.error('Comment not found.');
-      return res.status(404).json({ error: 'Comment not found.' });
+      return res.status(404).json({ message: 'Comment not found' });
     }
 
-    if (comment.user_id !== userId) {
-      console.error('User not authorized to delete this comment.');
-      return res.status(403).json({ error: 'User not authorized to delete this comment.' });
-    }
-
-    // Supprimer le commentaire
     await comment.destroy();
-
-    console.log('Comment deleted:', commentId);
-
-    return res.status(204).send(); // Réponse sans contenu
+    res.status(200).json({ message: 'Comment deleted successfully' });
   } catch (error) {
     console.error('Error deleting comment:', error);
-    return res.status(500).json({ error: 'Failed to delete comment.', details: error.message });
+    res.status(500).json({ message: 'Internal server error' });
   }
 };
+
 
 

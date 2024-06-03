@@ -14,6 +14,6 @@ router.get('/service/:serviceId', commentController.getCommentsForService);
 
 
 // DELETE route to delete a comment by ID
-router.delete('/:commentId', commentController.deleteComment);
+router.delete('/:id', commentController.deleteComment);
 
 module.exports = router;

@@ -27,24 +27,6 @@ async function getById(userId) {
 
   return helper.emptyOrRows(rows);
 }
-
-// async function create(user) {
-//   const result = await db.query(
-//     `INSERT INTO Users 
-//     (email, password, username, address, phone, profile_image) 
-//     VALUES 
-//     (?, ?, ?, ?, ?, ?)`,
-//     [user.email, user.password, user.username, user.address, user.phone, user.profile_image]
-//   );
-
-//   let message = "Error in creating user";
-
-//   if (result.affectedRows) {
-//     message = "User created successfully";
-//   }
-
-//   return { message };
-// }
 // User Controller - user.controller.js
 async function create(user) {
   if (!user || !user.email || !user.password || !user.username || !user.address || !user.phone || !user.profile_image) {
@@ -69,6 +51,34 @@ async function create(user) {
 }
 
 
+// async function update(id, user) {
+//   // Convert undefined values to null
+//   const values = [
+//     user.username || null,
+//     user.email || null,
+//     user.address || null,
+//     user.phone || null,
+//     user.profile_image || null,
+//     id
+//   ];
+
+//   const result = await db.query(
+//     `UPDATE Users 
+//     SET email=?, username=?, address=?, phone=?, profile_image=?
+//     WHERE id=?`,
+//     values
+//   );
+
+//   let message = "Error in updating user";
+
+//   if (result.affectedRows) {
+//     message = "User updated successfully";
+//   }
+
+//   return { message };
+// }
+
+// Assuming you have already imported required modules like express, etc.
 async function update(id, user) {
   // Convert undefined values to null
   const values = [
@@ -80,52 +90,27 @@ async function update(id, user) {
     id
   ];
 
-  const result = await db.query(
-    `UPDATE Users 
-    SET email=?, username=?, address=?, phone=?, profile_image=?
-    WHERE id=?`,
-    values
-  );
+  try {
+    const result = await db.query(
+      `UPDATE Users 
+      SET email=?, username=?, address=?, phone=?, profile_image=?
+      WHERE id=?`,
+      values
+    );
 
-  let message = "Error in updating user";
+    let message = "Error in updating user";
 
-  if (result.affectedRows) {
-    message = "User updated successfully";
+    if (result.affectedRows) {
+      message = "User updated successfully";
+    }
+
+    return { message };
+  } catch (error) {
+    console.error('Error while updating user:', error.message);
+    throw error;
   }
-
-  return { message };
 }
-// async function update(id, user) {
-//   const result = await db.query(
-//     `UPDATE Users 
-//     SET email=?, password=?, username=?, address=?, phone=?, profile_image=?
-//     WHERE user_id=?`,
-//     [user.email, user.password, user.username, user.address, user.phone, user.profile_image, id]
-//   );
 
-//   let message = "Error in updating user";
-
-//   if (result.affectedRows) {
-//     message = "User updated successfully";
-//   }
-
-//   return { message };
-// }
-// async function update(id, user) {
-//     const result = await db.query(
-//       `UPDATE Users 
-//       SET email=?, password=?, name=?, address=?, phone=?, registration_date=?, profile_image=?
-//       WHERE user_id=?`,
-//       [user.email, user.password, user.name, user.address, user.phone, user.registration_date, user.profile_image, id]
-//     );
-  
-//     let message = "Error in updating user";
-  
-//     if (result.affectedRows) {
-//       message = "User updated successfully";
-//     }
-  
-//     return { message };}
 
 
 
